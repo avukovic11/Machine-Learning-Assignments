@@ -1,0 +1,69 @@
+1. b)
+**Q:** Koja vrijednost odgovara ML-procjenama i zašto?  
+**A:** Ona odgovara izrazu m/N, to se dobije kad deriviramo funkciju izglednosti Bernoullijeve distribucije i izjednačimo je s 0 i tako nađemo maksimum.
+
+1. c)
+**Q:** Koja je ML-procjena za $\mu$ i što je problem s takvom procjenom u ovome slučaju?  
+**A:** ML-procjena za $\mu$ je 0 u slučaju m=0. To je problem jer je MLE (ML-procjena) osjetljiv na ekstremne vrijednosti u malim uzorcima pa u ovom slučaju ispada da je nemoguće dobiti uspjeh (prenaučenost).  
+Slično vrijedi i za m=9 gdje je ML-procjena za $\mu$ 0.9. Ovdje je procjena loša jer se radi o malom broju uzoraka pa ispada kako je šansa za uspjeh 90% što je previsoko (prenaučenost).
+
+2. a)
+**Q:** Koje parametere biste odabrali za modeliranje apriornog znanja o parametru $\mu$ za novčić za koji mislite da je "donekle pravedan, ali malo češće pada na glavu"? Koje biste parametre odabrali za novčić za koji držite da je posve pravedan? Zašto uopće koristimo beta-distribuciju, a ne neku drugu?  
+**A:** Za novčić koji je "donekle pravedan, ali malo češće pada na glavu" bih izabrao alfa=2 i beta=1 (pod uvjetom da je glava uspjeh). Za posve pravedan novčić bih izabrao $\alpha$=$\beta$=1 jer tad ne dajemo nikakvo apriorno znanje kako ne bismo preferirali bilo koju stranu novčića.  
+Beta-distribuciju koristimo jer je ona konjugatna apriorna distribucija Bernoullijevoj izglednosti. To je korisno jer nam to garantira maksimizator aposteriorne vrijednosti p($\phi$|D) u zatvorenoj formi te nam omogućuje online učenje.
+
+2. b)
+**Q:** Koje vrijednosti odgovaraju MAP-procjeni za $\mu$? Usporedite ih sa ML-procjenama.  
+**A:** MAP-procjeni za $\mu$ = (m + $\alpha$ - 1) / $\alpha$ + N + $\beta$ - 2. MAP je isti kao MLE u slučaju kad $\alpha$=$\beta$=1, inače se uvodi neko apriorno znanje. Što je N manji, to više dominira apriorno znanje od $\alpha$ i $\beta$. Vrijedi i suprotno.
+
+3. pogledaj grafove i linearne zavisnosti između značajki i vidi poklapa li se to s Pearsonovim koeficijentom
+
+5.
+**Q:** Kako biste svojim riječima opisali ovaj fenomen, koristeći se ovim primjerom?
+**A:** Varijable prskalice (S) i kiše (R) se natječu za objašnjavanje mokre trave (W). Dakle, vjerojatnost da pada kiša bit će veća ako je opaženo samo da je trava mokra nego da je opaženo da je trava mokra i da su uključene prskalice. Isto vrijedi i za prskalice: vjerojatnost da su uključene prskalice bit će veća ako je opaženo samo da je trava mokra nego da je opaženo da je trava mokra i da pada kiša.
+
+6. a)
+**Q:** Koju biste vrijednost hiperparametra $K$ izabrali na temelju ovog grafa? Zašto? Je li taj odabir optimalan? Kako to znate?   
+**A:** Izabrao bih  $K$=3 jer uz pomoć metode koljena (vidimo na grafu nakon kojeg $K$ se gubitak slabo smanjuje). Taj odabir nije optimalan jer inicijalno koristimo random centroide.
+**Q:** Je li ova metoda robusna?  
+**A:** Nije radi outliera. Ako njih ima, bit će potreba za većim $K$ iako to u stvarnosti nije potrebno.
+**Q:** Možemo li izabrati onaj $K$ koji minimizira pogrešku $J$? Objasnite.  
+**A:** $K$ koji minimizira pogrešku $J$ je $K$ = $N$. Tad je $J$ = 0, ali to je prenaučen model.
+
+6. b)
+**Q:** Kako biste se gledajući ove slike odlučili za $K$?  
+**A:** Podsjetnik: silueta - za svaki primjer se gleda koliko je udaljen od prosjeka svih primjera iz svoje grupe minus od prosjeka svih primjera iz najbliže susjedne grupe. Vrijednosti idu od -1 (jako blizu susjednoj grupi) do 1 (jako blizu svojoj grupi). Opet bih se odlučio za $K$ = 3 jer je to jedini $K$ gdje je silueta svake grupe veća od prosječne vrijednosti za sve siluete.
+**Q:** Koji su problemi ovog pristupa?  
+**A:** Klasteri s malo primjera mogu imati veliku varijancu, outlieri mogu značajno smanjiti prosječnu vrijednost siluete, ako podaci sadrže klastere različitih gustoća, silueta može favorizirati guste klastere i penalizirati one manje guste, čak i ako su dobro definirani.
+
+6. c)
+**Q:** Što se dogodilo? Koja je pretpostavka algoritma k-sredina ovdje narušena?  
+**A:** Narušena je pretpostavka da svaki primjer pripada grupi čiji mu je centroid najbliži. 
+**Q:** Što biste morali osigurati kako bi algoritam pronašao ispravne grupe?  
+**A:** Nez.
+
+6. d)
+**Q:** Što se dogodilo? Koja je pretpostavka algoritma k-sredina ovdje narušena?  
+**A:** Narušena je pretpostavka da su centroidi grupa različiti.  
+**Q:** Što biste morali osigurati kako bi algoritam pronašao ispravne grupe?
+**A:** 
+
+6. e)
+**Q:** Što se dogodilo? Koja je pretpostavka algoritma k-sredina ovdje narušena?  
+**A:** Narušena je pretpostavka da sve grupe sadržavaju sličan broj primjera (jedna grupa "izjeda" drugu zbog lakog pomicanja centroida manje grupe). 
+**Q:** Što biste morali osigurati kako bi algoritam pronašao ispravne grupe?
+**A:** 
+
+7. Uspjeva li GMM riješiti probleme k-srednjih vrijednosti?
+Prvi primjer da i to savršeno, jer su naši podaci u tom slučaju
+modelirani Gaussovim distribucijama pa će GMM naći parametre koji
+točno grupiraju. Drugi primjer ne, jer GMM isto kao i K-means
+pretpostavlja da podaci imaju različite centre. Treći primjer
+djelomično — kako GMM modelira Gaussove distribucije, on je rozu
+grupu modelirao s točnim središtem, ali previsokom varijancom pa je
+dio zelene grupe s lijeve strane krivo pripao rozoj grupi.
+
+8.
+**Q:** Zašto je Randov indeks pandan točnosti u klasifikacijskim problemima?  
+**Q:** Koji su glavni problemi ove metrike?  
+**Q:** Kako vrednovati kvalitetu grupiranja ako nenamo stvarne oznake primjera? Je li to uopće moguće?

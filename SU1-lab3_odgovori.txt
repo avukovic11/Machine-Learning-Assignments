@@ -1,0 +1,71 @@
+1. 
+a)
+**Q:** Koji primjeri su potporni vektori i zašto?  
+**A:** Potporni vektori su [5. 2.], [5. 4.] i [3. 2.] jer su najbliži margini.
+c)
+**Q:** Kako stršeća vrijednost utječe na SVM?  
+**A:** Stršeća vrijednost ne utječe na izgled margine.  
+**Q:** Kako se linearan SVM nosi s linearno neodvojivim skupom podataka?  
+**A:** Linearno neodvojivi model radi probleme SVM-u s tvrdom marginom jer je njegova pretpostavka da su primjeri linearno odvojivi. Margina postaje šira te jedan primjer ulazi u marginu.
+
+3.
+b)
+**Q:** Razlikuje li se površina pogreške na skupu za učenje i skupu za ispitivanje? Zašto?  
+**A:** (gledajući samo 2D) Da, vidi se da je najmanja pogreška na skupu za učenje u gornjem desnom kutu (sve bijelo, kontura 0.00), a na skupu za provjeru ide dijagonalno (veliki C i mali gama te obrnuto). Konture nisu iste jer se model za veliki C i veliki gama model prenauči.
+**Q:** U prikazu površine pogreške, koji dio površine odgovara prenaučenosti, a koji podnaučenosti? Zašto?  
+**A:** Prenaučenost - gore desno, podnaučenost - dolje lijevo.  
+**Q:** Kako broj dimenzija $n$ utječe na površinu pogreške, odnosno na optimalne hiperparametre $(C^*, \gamma^*)$?  
+**A:** Pogreška je veća što je dimenzionalnost veća. Optimalni C i gama su manji (?).   
+**Q:** Preporuka je da povećanje vrijednosti za $\gamma$ treba biti popraćeno smanjenjem vrijednosti za $C$. Govore li vaši rezultati u prilog toj preporuci? Obrazložite.  
+**A:** Da, to se vidi na slici za provjeru u 2D slučaju. Vidimo da je najmanji gubitak za mali $\gamma$ i veliki $C$.
+
+4.
+b)
+**Q:** Kako radi ovo skaliranje? <br> 
+**A:** MinMaxScaler iz sklearn.preprocessing skalira značajke tako da se njihove vrijednosti transformiraju u zadani raspon, obično između 0 i 1. Skaliranje se provodi prema formuli:
+X_std = (X - X.min(axis=0)) / (X.max(axis=0) - X.min(axis=0))
+X_scaled = X_std * (max - min) + min  
+**Q:** Dobiveni histogrami su vrlo slični. U čemu je razlika? <br>
+**A:** Značajke imaju istu distribuciju, ali na različitim skalama (vrijednosti značajki su između 0 i 1).
+
+c)
+**Q:** Kako radi ovo skaliranje? <br>
+**A:** StandardScaler iz sklearn.preprocessing skalira značajke tako da se njihove vrijednosti transformiraju tako da imaju srednju vrijednost 0 i standardnu devijaciju 1. Skaliranje se provodi prema formuli:
+z = (x - mean(x)) / std  
+**Q:** Dobiveni histogrami su vrlo slični. U čemu je razlika? <br>
+**A:** Dobiveni histogrami su slični jer prikazuju istu distribuciju podataka, ali na različitim skalama. Razlika je u tome što su vrijednosti značajki nakon standardnog skaliranja transformirane tako da imaju srednju vrijednost 0 i standardnu devijaciju 1.
+
+d)
+**Q:** Jesu li rezultati očekivani? Obrazložite. <br>
+**A:** U ovom slučaju je jedino standardizacija pomogla malo pomogla, iako su sve točnosti vrlo visoke. Standardizacija je vjerojatno više pomogla jer je ona otpornija na outliere.  
+**Q:** Bi li bilo dobro kada bismo funkciju `fit_transform` primijenili na cijelom skupu podataka? Zašto? Bi li bilo dobro kada bismo tu funkciju primijenili zasebno na skupu za učenje i zasebno na skupu za ispitivanje? Zašto?  
+**A:** Ne zato što bi tada model učio i na primjerima za testiranje.
+
+6.
+a)
+**Q:** Kako $k$ utječe na izgled granice između klasa?  
+**A:** Što je k veći, to je model više pretreniran te je granica manje glatka.
+**Q:** Kako se algoritam ponaša u ekstremnim situacijama: $k=1$ i $k=100$?  
+**A:** Kod k=1 vidimo da se granica prilagođava svakom primjeru, niti jedan primjer nije krivo klasificiran, kod k=100 u slučaju gdje je 100 primjera, granica ne postoji nego su svi primjeri klasificirani u najzastupljeniju klasu.
+
+b)
+**Q:** Kako se mijenja optimalna vrijednost hiperparametra $k$ s obzirom na broj primjera $N$? Zašto?  
+**A:** Optimalna vrijednost hiperparametra $k$ s obzirom na broj primjera $N$ raste jer veći broj primjera omogućuje modelu da koristi više susjeda za donošenje odluka bez gubitka preciznosti.  
+**Q:** Kojem području odgovara prenaučenost, a kojem podnaučenost modela? Zašto?  
+**A:** Prenaučenost je područje gdje je k mali, a podnaučenost gdje je k velik.  
+**Q:** Je li uvijek moguće doseći pogrešku od 0 na skupu za učenje?
+**A:** Ne, to je vidljivo iz slike.
+
+7.
+**Q:** Je li algoritam k-najbližih susjeda osjetljiv na nebitne značajke? Zašto?  
+**A:** Da. To je zato što k-NN koristi udaljenost između primjera za donošenje odluka, a nebitne značajke mogu dodati šum i utjecati na izračun udaljenosti. Ako nebitne značajke imaju veliki raspon vrijednosti, mogu dominirati nad bitnim značajkama i negativno utjecati na performanse modela.  
+**Q:** Je li ovaj problem izražen i kod ostalih modela koje smo dosad radili (npr. logistička regresija)?  
+**A:** Da, problem nebitnih značajki može biti izražen i kod drugih modela, uključujući logističku regresiju. Nebitne značajke mogu dodati šum i smanjiti performanse modela. Međutim, neki modeli, poput regularizirane logističke regresije, mogu biti manje osjetljivi na nebitne značajke jer regularizacija može smanjiti njihov utjecaj.  
+**Q:** Kako bi se model k-najbližih susjeda ponašao na skupu podataka sa značajkama različitih skala? Detaljno pojasnite.  
+**A:** Model k-najbližih susjeda bi se loše ponašao na skupu podataka sa značajkama različitih skala. To je zato što k-NN koristi udaljenost između primjera za donošenje odluka, a značajke s većim rasponom vrijednosti će dominirati nad značajkama s manjim rasponom vrijednosti.
+
+8.
+**Q:** Pokušajte objasniti razlike u rezultatima. Koju biste od ovih dviju mjera koristili za klasifikaciju visokodimenzijskih podataka?  
+**A:** Vidimo da kosinusna udaljenost ne raste s povećanjem dimenzija, dok euklidska raste. Tako da bih za klasifikaciju visokodimenzijskih podataka koristio kosinusnu udaljenost.  
+**Q:** Zašto je ovaj problem osobito izražen kod algoritma k-najbližih susjeda?  
+**A:** Zato što algoritam izravno ovisi o mjerenju udaljenosti zmeđu primjera.

@@ -1,0 +1,83 @@
+1. a)
+**Q:** Kako bi bila definirana granica između klasa ako bismo koristili oznake klasa $-1$ i $1$ umjesto $0$ i $1$?
+
+**A:** Granica bi bila na h(x) = 0
+
+1. b)
+**Q:** Zašto model ne ostvaruje potpunu točnost iako su podatci linearno odvojivi?
+
+**A:** Zato što nova točka (12, 8) jako utječe na decizijsku granicu (regresijski modeli za klasifikaciju imaju problema s nerobusnosti)
+
+1. c)
+**Q:** Očito je zašto model nije u mogućnosti postići potpunu točnost na ovom skupu podataka. Međutim, smatrate li da je problem u modelu ili u podacima? Argumentirajte svoj stav.
+
+**A:** Rekao bih da je problem u podacima zato što su podaci linearno neodvojivi i ne postoji decizijska granica koja bi popravila ovo.
+
+2.
+**Q:** Alternativna shema jest ona zvana **jedan-naspram-jedan** (engl, *one-vs-one*, OVO). Koja je prednost sheme OVR nad shemom OVO? A obratno?
+
+**A:** Prednost OVR-a: manje klasifikatora (K naspram K povrh 2, nedostatak OVR-a: neuravnotežen broj primjera izmedu parova klasa za koje treniramo model. Zato što ćemo u pravilu za svaki model hj imati puno više negativnih primjera (svi oni koji ne pripadaju klasi j) od pozitivnih primjera.
+
+3. a)
+**Q**: Zašto je sigmoidalna funkcija prikladan izbor za aktivacijsku funkciju poopćenoga linearnog modela? 
+
+**A:** Prvo, vrijednosti gniječi na (otvoreni) interval <0, 1>.  
+Drugo, oblikom je slična funkciji praga, što znači da će davati vrijednost blizu 1 primjerima iz jedne klase, a vrijednost blizu 0 primjerima iz druge klase.   Treće, funkcija je derivabilna, što nam je važno za optimizaciju.
+
+**Q**: Kakav utjecaj ima faktor $\alpha$ na oblik sigmoide? Što to znači za model logističke regresije (tj. kako izlaz modela ovisi o normi vektora težina $\mathbf{w}$)?
+
+**A:** Što je $\alpha$ veći to je sigmoida strmija. Što je sigmoida strmija, to će više ličiti na step funkciju te će davat izlaze koji su bliže 0, odnosno 1 (teško će davati izlaze koji su u sredini, npr. 0.5).
+
+3. c)
+**Q:** Koji kriterij zaustavljanja je aktiviran?
+
+**A:** Aktiviran je kriterijem konvergencije (947 iteracija).
+
+**Q:** Zašto dobivena pogreška unakrsne entropije nije jednaka nuli?
+
+**A:** Zato što je nemoguće dobiti da je cross entropy error jednak 0 (zato što sigmoida nikad neće dati izlaz koji je točno 0 ili 1). On kažnjava i točno klasificirane primjere, ali što je točnije primjer klasificiran, to će ga manje kazniti.
+
+**Q:** Kako biste utvrdili da je optimizacijski postupak doista pronašao hipotezu koja minimizira pogrešku učenja? O čemu to ovisi?
+
+**A:** Morali bismo testirati model na neviđenim primjerima (validation set) i vidjeti u kojoj iteraciji je pogreška najmanja.
+
+**Q:** Na koji način biste preinačili kôd ako biste htjeli da se optimizacija izvodi stohastičkim gradijentnim spustom (*online learning*)?
+
+**A:** Stohastički gradijentni spust razlikuje se od standardnog po tome što:
+(1) ažuriranje težina radimo unutar petlje koja iterira po svim primjerima
+(2) ne koristimo linijsko pretraživanje
+(3) prije svakog prolaska kroz sve primjere (tzv. epoha) slučajno permutiramo primjere, kako se ažuriranje težina ne bi u svakoj epohi radilo na primjerima u istome redoslijedu, što bi smanjilo stohastičnost gradijentnog spusta.
+
+3. d)
+
+**Q:** Zašto je pogreška unakrsne entropije veća od pogreške klasifikacije? Je li to uvijek slučaj kod logističke regresije i zašto?
+
+**A:** Pogreška unakrsne entropije je veća jer ona penalizira sve predikcije, a pogreška klasifikacije samo one netočno predviđene, i to sve sa pogreškom 1. To bi uvijek trebalo biti tako jer onaj graf lijepo prikazuje da vrijednost cross entropy errora nikad neće pasti ispod pogreške klasifikacije (jedino se sijeku kad je h(x)=0.5
+
+**Q:** Koju stopu učenja $\eta$ biste odabrali i zašto?
+
+**A:** U ovom slučaju bih izabrao $\eta$ = 0.1 jer daje najmanju pogrešku
+
+4. a)
+**Q:** Zašto se rezultat razlikuje od onog koji je dobio model klasifikacije linearnom regresijom iz prvog zadatka?
+
+**A:** Zato što ti "outlieri" (jako točno klasificirani primjeri) slabo utječu na decizijsku granicu jer ne nanose veliki gubitak
+
+4. c)
+**Q:** Usporedite grafikone za slučaj linearno odvojivih i linearno neodvojivih primjera te komentirajte razliku.
+
+**A:** h(x) je jako sličan za oba skupa, a najveća razlika se očituje kod točaka koje su blizu decizijske granice. Težine su manje u unsep grafu. 
+
+5.
+**Q:** Jesu li izgledi krivulja očekivani i zašto?
+
+**A:** Jesu, što je veći $\alpha$, to je pogreška veća, a težine su manje. To je zato što regularizacija pojednostavljuje modele (tada je pogreška veća na skupu za trening) pritezanjem težina prema nuli.
+
+**Q:** Koju biste vrijednost za $\alpha$ odabrali i zašto?
+
+**A:** To nije moguće odrediti bez skupa za validaciju na kojem bismo gledali koja složenost modela (tj. koji stupanj regularizacije $\alpha$) je optimalna.
+
+6.
+**Q:** Koji biste stupanj polinoma upotrijebili i zašto? Je li taj odabir povezan s odabirom regularizacijskog faktora $\alpha$? Zašto?
+
+**A:** (ovo pričam vezano za C=1, C=1/lambda) Odabrao bih stupanj 2 jer sam u nekim slučajevima vidio naznake prenaučenosti. Taj odabir ima veze s odabirom regularizacijskog faktora $\alpha$ jer on može smanjiti složenost modela i spriječiti to da se model prenauči.

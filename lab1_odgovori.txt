@@ -1,0 +1,34 @@
+1. c)
+Razlika izmedu E(h|D) i MSE je ta da E(h|D) dijeli s brojem 2 radi jednostavnosti, a MSE s brojem grešaka. MSE je realniji jer ovisi o broju primjera, tj. daje nam neki prosjek.
+
+1. d)
+Matrica PHI nije invertibilna jer nije kvadratna i punog ranga (nema jednako ulaza koliko ima značajki).
+Pseudoinverz se može računati za bilo koju matricu.
+Mogli bismo preslikati primjere u višu dimenziju tako da broj značajki bude jednak broju primjera - 1, ali mora se paziti da značajke nisu multikolinearne jer rang matrice onda ne bi bio pun.
+
+3. a)
+Najmanju pogrešku učenja ima model s polinomom stupnja 20 jer se najbolje može prilagoditi podacima, ali to ne znači da je taj model najbolji za predikciju novih podataka.
+
+3. b)
+Rezultat je u skladu s očekivanjima: greška na trainu se smanjuje kako povećavamo stupanj polinoma i u pravilu je manji od greške testa dok greška na testu raste jer model postaje prekompleksan i prenaučen za tip podataka koji imamo
+
+Rezultati se znatno mijenjaju jer naš dataset ima malo podataka. Da imamo više podataka, rezultati bi bili stabilniji i greška na testu bi se vjerojatno smanjivala s povećanjem stupnja polinoma.
+
+4. a)
+Težine se razlikuju po veličini: što je regularizacijski faktor veći, to su težine manje. To je očekivano jer regularizacija penalizira velike težine, smanjujući ih kako bi se spriječilo prenaučenje.
+
+4. b)
+I had to use PHI[:, 1:] because Ridge model automatically adds bias term for some reason, when i changed the fit_intercept parameter to False, the model didn't work as intended
+Nez zas je ovo na engleskom lol
+
+5. a)
+L2 vjerojatno nikad neće dosegnuti 0 jer je to kvadratna norma pa slabije kažnjava male težine. To je problem jer želimo rijetke modele koji su jednostavniji i interpretabilniji.
+
+6. b)
+U a) dijelu se vidi da bi više u obzir trebali uzimati score iz prijamnog ispita, a to se u slučaju bez standardizacije ne vidi, tj. veća je težina za ocjenu iz srednje škole. Kad se standardizira, onda je težina za score iz prijamnog veća od težine za ocjenu iz srednje što je dobro
+
+7. a) 
+Težina w2 iz 6. b) se podijelila na dvije težine s istim iznosom. To ima smisla jer y = w0 + w1x1 + w2x2 + w3x3 = w0 + w1x1 + 2*w2x2, a taj 2*w2x2 je jednak w2x2 iz slučaja s nemultikolinearnim značajkama.
+
+7. b)
+Vidimo da veći regularizacijski faktor priteže težine bliže nuli i da su standardne devijacije sve manje što je taj faktor veći. To je očekivano.
